@@ -1,0 +1,46 @@
+name: Deploy Node Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t yashkjha/nivasa-node:${{ github.sha }} .
+
+      - name: Publish Image to Docker Hub
+        run: docker push yashkjha/nivasa-node:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Pull image from Docker Hub
+        run: docker pull yashkjha/nivasa-node:${{ github.sha }}
+
+      - name: Delete old container
+        run: |
+          if [ $(docker ps -aq -f name=nodejs-app-container) ]; then
+            docker rm -f nodejs-app-container
+          fi
+
+      - name: Run Docker Container
+        run: docker run -d -p 3000:3000 --name nodejs-app-container \
+          -e MONGO_URI='${{ secrets.MONGO_URI }}' \
+          -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+          yashkjha/nivasa-node:${{ github.sha }}
