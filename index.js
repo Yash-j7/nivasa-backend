@@ -60,6 +60,10 @@ app.use("/api/message", messageRouter);
 app.use("/api/conversation", conversationRoute);
 app.use("/api/notification", notificatonRoute);
 
+app.get("/", (req, res) => {
+  res.send("Server is running and ready to handle requests.");
+});
+
 //============== Deployment==============//
 
 // const __dirname = path.resolve();
