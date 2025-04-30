@@ -24,7 +24,7 @@ const expressServer = http.createServer(app);
 if (process.env.NODE_ENV === "local") {
   app.use(
     cors({
-      origin: "http://43.204.115.99:80",
+      origin: "http://43.204.115.99",
       credentials: true,
     })
   );
