@@ -21,31 +21,14 @@ app.use(cookieParser());
 const expressServer = http.createServer(app);
 
 //Handling CORS origin
-if (process.env.NODE_ENV === "local") {
-  app.use(
-    cors({
-      origin: "http://43.204.115.99", // Frontend origin
-      credentials: true, // Allow cookies
-    })
-  );
-} else {
-  app.use(
-    cors({
-      origin: (origin, callback) => {
-        const allowedOrigins = ["http://43.204.115.99"]; // List of allowed origins
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true); // Allow the request
-        } else {
-          callback(new Error("Not allowed by CORS")); // Reject the request
-        }
-      },
-      credentials: true, // Allow cookies
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Allowed methods
-      allowedHeaders: ["Content-Type", "Authorization"], // Include additional headers if necessary
-    })
-  );
-}
-
+app.use(
+  cors({
+    origin: ["http://43.204.115.99", "http://localhost:5173"],
+    credentials: true, // This is essential for cookies to work cross-domain
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 const PORT = process.env.PORT || 3000;
 
