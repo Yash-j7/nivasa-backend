@@ -60,10 +60,10 @@ export const signin = async (req, res, next) => {
     // Set secure cookie with token
     res
       .cookie("access_token", token, {
-        httpOnly: true, // Prevent JavaScript access to the cookie
-        secure: process.env.NODE_ENV === "production", // Secure in production
-        sameSite: "strict", // Protect against CSRF
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        httpOnly: true,
+        secure: false, // Keep false for HTTP
+        sameSite: "lax", // Change from "strict"
+        maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json(rest);

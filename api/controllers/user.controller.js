@@ -66,8 +66,8 @@ export const deleteUser = async (req, res, next) => {
 
 //=====Get User Created Post=====//
 export const userPosts = async (req, res, next) => {
-  // if (req.user.id !== req.params.id)
-  //   return next(throwError(401, "You can see only your posts"));
+  if (req.user.id !== req.params.id)
+    return next(throwError(401, "You can see only your posts"));
   try {
     const posts = await Listing.find({ userRef: req.params.id });
     res.status(200).json(posts);
