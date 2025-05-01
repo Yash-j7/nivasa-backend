@@ -23,7 +23,11 @@ const expressServer = http.createServer(app);
 //Handling CORS origin
 app.use(
   cors({
-    origin: ["http://43.204.115.99", "http://localhost:5173"],
+    origin: [
+      "http://43.204.115.99",
+      "http://localhost:5173",
+      "http://nivasa.live",
+    ],
     credentials: true, // This is essential for cookies to work cross-domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
