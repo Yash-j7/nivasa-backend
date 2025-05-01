@@ -66,11 +66,7 @@ export const signin = async (req, res, next) => {
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       })
       .status(200)
-      .json({
-        success: true,
-        message: "Sign-in successful!",
-        user: rest, // Return user info without sensitive data
-      });
+      .json(rest);
   } catch (error) {
     console.error("Error during sign-in:", error);
     next(error); // Pass the error to your error handler middleware
