@@ -27,33 +27,53 @@ export const singup = async (req, res, next) => {
 };
 
 // ========sing in route handling here =====//
+// ======== Sign-in Route Handling ===== //
 export const signin = async (req, res, next) => {
   const { email, userPassword } = req.body;
+
   try {
+    // Find user by email
     const validUser = await User.findOne({ email });
-    if (!validUser) return next(throwError(404, "Worng Credentials!"));
+    if (!validUser) {
+      return next(throwError(404, "Wrong Credentials!"));
+    }
+
+    // Verify password
     const isValidPassword = bcrypt.compareSync(
       userPassword,
       validUser.password
     );
-    if (!isValidPassword) return next(throwError(401, "Worng Credentials!"));
+    if (!isValidPassword) {
+      return next(throwError(401, "Wrong Credentials!"));
+    }
 
+    // Destructure and exclude password
     const { password, ...rest } = validUser._doc;
-    const tooken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "720h",
-    });
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: validUser._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "30d" } // Matches the cookie's maxAge
+    );
+
+    // Set secure cookie with token
     res
-      .cookie("access_token", tooken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+      .cookie("access_token", token, {
+        httpOnly: true, // Prevent JavaScript access to the cookie
+        secure: process.env.NODE_ENV === "production", // Secure in production
+        sameSite: "strict", // Protect against CSRF
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       })
       .status(200)
-      .json(rest);
+      .json({
+        success: true,
+        message: "Sign-in successful!",
+        user: rest, // Return user info without sensitive data
+      });
   } catch (error) {
-    console.log(error);
-    next(error);
+    console.error("Error during sign-in:", error);
+    next(error); // Pass the error to your error handler middleware
   }
 };
 

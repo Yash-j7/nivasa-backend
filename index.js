@@ -24,14 +24,21 @@ const expressServer = http.createServer(app);
 if (process.env.NODE_ENV === "local") {
   app.use(
     cors({
-      origin: "http://43.204.115.99",
+      origin: "http://43.204.115.99", // Frontend origin
       credentials: true,
     })
   );
 } else {
   app.use(
     cors({
-      origin: "*",
+      origin: (origin, callback) => {
+        const allowedOrigins = ["http://43.204.115.99/"];
+        if (allowedOrigins.includes(origin)) {
+          callback(null, origin); // Allow the request
+        } else {
+          callback(new Error("Not allowed by CORS")); // Reject the request
+        }
+      },
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     })
