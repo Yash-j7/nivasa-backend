@@ -1,5 +1,5 @@
-// import jwt from "jsonwebtoken";
-// import { throwError } from "./error.js";
+import jwt from "jsonwebtoken";
+import { throwError } from "./error.js";
 
 // export const verifyToken = (req, res, next) => {
 //   const tooken = req.cookies.access_token;
@@ -11,12 +11,7 @@
 //   });
 // };
 // First, let's modify your verifyToken middleware to be more robust:
-const throwError = (status, message) => {
-  const error = new Error();
-  error.status = status;
-  error.message = message;
-  return error;
-};
+
 export const verifyToken = (req, res, next) => {
   console.log("Headers:", req.headers);
   console.log("Cookies:", req.cookies);
