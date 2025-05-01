@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { passwordGenarator, usernameGenarator } from "../utils/helper.js";
 
 //======handle singup route ===========//
-export const signup = async (req, res, next) => {
+export const singup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!password || password.trim() === "") {
