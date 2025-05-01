@@ -43,7 +43,7 @@ const PORT = process.env.PORT || 3000;
 // Connect to the database
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(process.env.MONGO);
+  await mongoose.connect(process.env.MONGO_URI);
   console.log("Database connected");
 }
 
