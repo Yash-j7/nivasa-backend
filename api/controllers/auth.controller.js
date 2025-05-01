@@ -66,7 +66,7 @@ export const signin = async (req, res, next) => {
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
-      .json(rest);
+      .json({ token, rest });
   } catch (error) {
     console.error("Error during sign-in:", error);
     next(error); // Pass the error to your error handler middleware
