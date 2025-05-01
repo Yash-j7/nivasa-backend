@@ -57,6 +57,9 @@ export const signin = async (req, res, next) => {
       { expiresIn: "30d" } // Matches the cookie's maxAge
     );
 
+    // Add token to rest object
+    rest.token = token;
+
     // Set secure cookie with token
     res
       .cookie("access_token", token, {
@@ -66,7 +69,7 @@ export const signin = async (req, res, next) => {
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
-      .json({ token, rest });
+      .json(rest); // Send the modified rest object
   } catch (error) {
     console.error("Error during sign-in:", error);
     next(error); // Pass the error to your error handler middleware
