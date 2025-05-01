@@ -25,25 +25,27 @@ if (process.env.NODE_ENV === "local") {
   app.use(
     cors({
       origin: "http://43.204.115.99", // Frontend origin
-      credentials: true,
+      credentials: true, // Allow cookies
     })
   );
 } else {
   app.use(
     cors({
       origin: (origin, callback) => {
-        const allowedOrigins = ["http://43.204.115.99/"];
-        if (allowedOrigins.includes(origin)) {
-          callback(null, origin); // Allow the request
+        const allowedOrigins = ["http://43.204.115.99"]; // List of allowed origins
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true); // Allow the request
         } else {
           callback(new Error("Not allowed by CORS")); // Reject the request
         }
       },
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true, // Allow cookies
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Allowed methods
+      allowedHeaders: ["Content-Type", "Authorization"], // Include additional headers if necessary
     })
   );
 }
+
 
 const PORT = process.env.PORT || 3000;
 
