@@ -89,6 +89,8 @@ export const googleSignIn = async (req, res, next) => {
       });
 
       const { password, ...rest } = user._doc;
+      // Add token to rest object
+      rest.token = tooken;
       res
         .cookie("access_token", tooken, { httpOnly: true, secure: true })
         .status(200)
@@ -109,6 +111,8 @@ export const googleSignIn = async (req, res, next) => {
         expiresIn: "720h",
       });
       const { pass: password, ...rest } = user._doc;
+      // Add token to rest object
+      rest.token = tooken;
       res
         .cookie("access_token", tooken, { httpOnly: true, secure: true })
         .status(200)
