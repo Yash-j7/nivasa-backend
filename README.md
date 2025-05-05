@@ -1,4 +1,4 @@
-LIVE_URL: https://nivasa.live/
+LIVE_URL: http://nivasa.live/
 
 Technology: 🚀
 Backend - Node Js, Express Js, Socket Io, Mongoose, Jwt.
