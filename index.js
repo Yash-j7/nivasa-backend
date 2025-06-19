@@ -28,6 +28,7 @@ app.use(
       "http://localhost:5173",
       "http://nivasa.live",
       "https://nivasa.onrender.com",
+      "https://nivasa-dnag.onrender.com",
     ],
     credentials: true, // This is essential for cookies to work cross-domain
     methods: ["GET", "POST", "PUT", "DELETE"],
